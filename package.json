@@ -1,0 +1,23 @@
+{
+  "name": "twilio-voice-assistant",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "AI-powered Twilio voice assistant with OpenAI NLU + business API knowledge.",
+  "main": "src/server.js",
+  "scripts": {
+    "dev": "nodemon src/server.js",
+    "start": "node src/server.js"
+  },
+  "dependencies": {
+    "body-parser": "^1.20.2",
+    "cors": "^2.8.5",
+    "dotenv": "^16.6.1",
+    "express": "^4.19.2",
+    "node-fetch": "^3.3.2",
+    "twilio": "^4.23.0",
+    "zod": "^3.23.8"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.0"
+  }
+}
