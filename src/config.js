@@ -24,17 +24,29 @@ export const CONFIG = {
 
   TWILIO: {
     VOICE_LANGUAGE: process.env.TWILIO_VOICE_LANGUAGE || "en-IN",
-    VOICE_HINTS:
-      process.env.TWILIO_VOICE_HINTS ||
-      "sales,representatives,leads,clients,active,present,count,list",
+    VOICE_HINTS: process.env.TWILIO_VOICE_HINTS || "sales,representatives,leads,clients,active,present,count,list",
+    FROM_NUMBER: process.env.TWILIO_FROM_NUMBER || "",
   },
 
   SALESREP_API: {
     URL: process.env.SALESREP_API_URL || "",
-    AUTH_TYPE: (process.env.SALESREP_API_AUTH_TYPE || "none").toLowerCase(), // none|bearer|header
+    AUTH_TYPE: (process.env.SALESREP_API_AUTH_TYPE || "none").toLowerCase(),
     BEARER: process.env.SALESREP_API_BEARER || "",
     HEADER_KEY: process.env.SALESREP_API_HEADER_KEY || "",
     HEADER_VALUE: process.env.SALESREP_API_HEADER_VALUE || "",
+  },
+
+  SUPABASE: {
+    URL: process.env.SUPABASE_URL || "",
+    SERVICE_KEY: process.env.SUPABASE_SERVICE_KEY || "",
+  },
+
+  FORWARD_TO_NUMBER: process.env.FORWARD_TO_NUMBER || "",
+
+  VOBIZ: {
+    AUTH_ID: process.env.VOBIZ_AUTH_ID || "",
+    AUTH_TOKEN: process.env.VOBIZ_AUTH_TOKEN || "",
+    NUMBER: process.env.VOBIZ_NUMBER || "",
   },
 };
 

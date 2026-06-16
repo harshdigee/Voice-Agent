@@ -1,112 +1,162 @@
-import { createGather, sayAndHangup, sayAndContinue, noInputResponse } from '../utils/twiml.js';
-import { classifyUtterance } from '../services/nlu.js';
-import { fetchSalesReps, getCounts, listNames } from '../services/knowledge.js';
-import { log } from '../utils/logger.js';
+import { createGather, sayAndHangup, sayAndContinue, noInputResponse } from "../utils/twiml.js";
+import { classifyUtterance } from "../services/nlu.js";
+import { fetchSalesReps, getCounts, listNames, answerFromKnowledge } from "../services/knowledge.js";
+import { CONFIG } from "../config.js";
+import { log } from "../utils/logger.js";
+import twilio from "twilio";
 
+const { twiml: Twiml } = twilio;
+
+// ─────────────────────────────────────────────────────────────
+// INBOUND / OUTBOUND entry point
+// Both inbound calls and outbound calls hit this handler.
+// ─────────────────────────────────────────────────────────────
 export async function inbound(req, res) {
-  const { vr, gather } = createGather({ action: '/voice/collect', speechTimeout: 'auto' });
+  const { vr, gather } = createGather({ action: "/voice/collect", speechTimeout: "auto" });
 
-  gather.say('Hello! Thanks for calling Simply Synced AI Support.');
-  gather.say('Please tell me the reason for your call. For example, "How many sales reps are present?"');
+  gather.say("Hello! Thanks for calling DigeeSell. I am your AI assistant.");
+  gather.say("You can ask me about our services, pricing, or team.");
   gather.pause({ length: 1 });
-  gather.say('You can also press 1 to hear the total count of sales reps, or press 2 to list the first five names.');
+  gather.say("Or press 9 at any time to speak with a team member.");
 
-  res.type('text/xml').send(vr.toString());
+  res.type("text/xml").send(vr.toString());
 }
 
+// ─────────────────────────────────────────────────────────────
+// COLLECT — handles speech + DTMF after gather
+// ─────────────────────────────────────────────────────────────
 export async function collect(req, res) {
-  const speech = (req.body.SpeechResult || '').toLowerCase().trim();
-  const digits = req.body.Digits || '';
-  log.info('SpeechResult:', speech, 'Digits:', digits);
+  const speech = (req.body.SpeechResult || "").trim();
+  const digits = (req.body.Digits || "").trim();
+  log.info("collect → speech:", speech, "| digits:", digits);
 
-  // 🧩 Goodbye detection
-  const goodbyes = ['bye', 'goodbye', 'exit', 'thank you', 'thanks', 'that\'s all'];
-  if (goodbyes.some((kw) => speech.includes(kw))) {
-    const vr = sayAndHangup('Thank you for calling Simply Synced AI Support. Have a great day!');
-    return res.type('text/xml').send(vr.toString());
+  // ── Press 9 → forward to human ──────────────────────────────
+  if (digits === "9") {
+    return forwardToHuman(res);
   }
 
-  // 🧩 DTMF shortcuts
-  if (digits === '1') {
-    return respondSalesRepCount(req, res, { activeOnly: false });
-  }
-  if (digits === '2') {
-    return respondListSalesReps(req, res);
+  // ── No input ────────────────────────────────────────────────
+  if (!speech && !digits) {
+    return res.type("text/xml").send(noInputResponse().toString());
   }
 
-  // 🧩 If no speech or input
-  if (!speech) {
-    const vr = noInputResponse();
-    return res.type('text/xml').send(vr.toString());
-  }
-
-  // 🧩 NLU classification
-  const nlu = await classifyUtterance(speech);
-  log.info('NLU:', nlu);
+  // ── NLU classify ────────────────────────────────────────────
+  const nlu = await classifyUtterance(speech || digits);
+  log.info("NLU result:", nlu);
 
   switch (nlu.intent) {
-    case 'GET_SALES_REP_COUNT':
-      return respondSalesRepCount(req, res, nlu.params || {});
-    case 'LIST_SALES_REPS':
-      return respondListSalesReps(req, res);
-    case 'HELP':
-      return respondHelp(req, res);
-    case 'REPEAT':
-      return respondRepeat(req, res);
-    default: {
-      const vr = sayAndContinue(
-        'Sorry, that request is beyond my current capabilities. But I have noted it for future improvements.'
+    case "GOODBYE":
+      return res.type("text/xml").send(
+        sayAndHangup("Thank you for calling DigeeSell. Have a great day! Goodbye!").toString()
       );
-      return res.type('text/xml').send(vr.toString());
+
+    case "FORWARD_TO_HUMAN":
+      return forwardToHuman(res);
+
+    case "GET_SALES_REP_COUNT":
+      return respondSalesRepCount(res, nlu.params || {});
+
+    case "LIST_SALES_REPS":
+      return respondListSalesReps(res);
+
+    case "KNOWLEDGE_QUERY":
+      return respondKnowledge(res, speech);
+
+    case "HELP":
+      return respondHelp(res);
+
+    case "REPEAT":
+      return respondRepeat(res);
+
+    default: {
+      // Still try KB for unknown questions before giving up
+      if (speech.length > 3) {
+        return respondKnowledge(res, speech);
+      }
+      const vr = sayAndContinue(
+        "I'm not sure about that. You can ask about our services, pricing, or press 9 to speak with our team."
+      );
+      return res.type("text/xml").send(vr.toString());
     }
   }
 }
 
-// ======================================================
-// 🔹 HANDLERS
-// ======================================================
+// ─────────────────────────────────────────────────────────────
+// FORWARD TO HUMAN — dials FORWARD_TO_NUMBER
+// ─────────────────────────────────────────────────────────────
+function forwardToHuman(res) {
+  const forwardTo = CONFIG.FORWARD_TO_NUMBER;
+  const from = CONFIG.TWILIO.FROM_NUMBER || process.env.TWILIO_FROM_NUMBER;
 
-async function respondSalesRepCount(req, res, { activeOnly = false } = {}) {
-  const reps = await fetchSalesReps();
-  if (!reps.ok) {
-    const vr = sayAndContinue('Sorry, I could not fetch the sales representative data right now. Please try again later.');
-    return res.type('text/xml').send(vr.toString());
+  if (!forwardTo) {
+    const vr = sayAndContinue(
+      "I'm sorry, I'm unable to connect you to a team member right now. Please call back during business hours."
+    );
+    return res.type("text/xml").send(vr.toString());
   }
 
-  const { total, active, result } = getCounts(reps.data, { activeOnly });
-  const text = activeOnly
-    ? `There are ${active} active sales representatives at the moment.`
-    : `There are ${total} sales representatives in total.`;
-
-  const vr = sayAndContinue(text);
-  return res.type('text/xml').send(vr.toString());
+  const vr = new Twiml.VoiceResponse();
+  vr.say({ language: CONFIG.TWILIO.VOICE_LANGUAGE }, "Please hold, I am connecting you to a DigeeSell team member now.");
+  vr.dial({ callerId: from || undefined }, forwardTo);
+  return res.type("text/xml").send(vr.toString());
 }
 
-async function respondListSalesReps(req, res) {
+// ─────────────────────────────────────────────────────────────
+// KNOWLEDGE BASE ANSWER
+// ─────────────────────────────────────────────────────────────
+async function respondKnowledge(res, question) {
+  try {
+    const answer = await answerFromKnowledge(question);
+    const vr = sayAndContinue(answer);
+    return res.type("text/xml").send(vr.toString());
+  } catch (err) {
+    log.error("respondKnowledge error:", err.message);
+    const vr = sayAndContinue("I had trouble finding that answer. Press 9 to speak with our team.");
+    return res.type("text/xml").send(vr.toString());
+  }
+}
+
+// ─────────────────────────────────────────────────────────────
+// SALES REP HELPERS
+// ─────────────────────────────────────────────────────────────
+async function respondSalesRepCount(res, { activeOnly = false } = {}) {
   const reps = await fetchSalesReps();
   if (!reps.ok) {
-    const vr = sayAndContinue('Sorry, I could not fetch the sales representative names right now. Please try again later.');
-    return res.type('text/xml').send(vr.toString());
+    const vr = sayAndContinue("Sorry, I could not fetch the team data right now. Please try again later.");
+    return res.type("text/xml").send(vr.toString());
   }
+  const { total, active } = getCounts(reps.data, { activeOnly });
+  const text = activeOnly
+    ? `There are ${active} active team members right now.`
+    : `There are ${total} team members in total.`;
+  return res.type("text/xml").send(sayAndContinue(text).toString());
+}
 
+async function respondListSalesReps(res) {
+  const reps = await fetchSalesReps();
+  if (!reps.ok) {
+    const vr = sayAndContinue("Sorry, I could not fetch team names right now.");
+    return res.type("text/xml").send(vr.toString());
+  }
   const names = listNames(reps.data, 5);
   const text = names.length
-    ? `Here are the first ${names.length} names: ${names.join(', ')}.`
-    : 'I could not find any sales representatives.';
-
-  const vr = sayAndContinue(text);
-  return res.type('text/xml').send(vr.toString());
+    ? `Here are the first ${names.length} team members: ${names.join(", ")}.`
+    : "I could not find any team members.";
+  return res.type("text/xml").send(sayAndContinue(text).toString());
 }
 
-async function respondHelp(req, res) {
-  const { vr, gather } = createGather({ action: '/voice/collect' });
-  gather.say('You can ask, "How many sales reps are present?", or "List sales rep names".');
-  gather.say('You can also press 1 for the total count, or press 2 for names.');
-  return res.type('text/xml').send(vr.toString());
+// ─────────────────────────────────────────────────────────────
+// HELP / REPEAT
+// ─────────────────────────────────────────────────────────────
+function respondHelp(res) {
+  const { vr, gather } = createGather({ action: "/voice/collect" });
+  gather.say("You can ask me about DigeeSell services, pricing, social media marketing, SEO, and more.");
+  gather.say("Say the name of a service, or ask any question. Press 9 to speak with our team.");
+  return res.type("text/xml").send(vr.toString());
 }
 
-async function respondRepeat(req, res) {
-  const { vr, gather } = createGather({ action: '/voice/collect' });
-  gather.say('Repeating the options: Ask about sales rep counts or names. Press 1 for count, or press 2 for names.');
-  return res.type('text/xml').send(vr.toString());
+function respondRepeat(res) {
+  const { vr, gather } = createGather({ action: "/voice/collect" });
+  gather.say("I am your DigeeSell AI assistant. Ask me about our services, pricing, or team. Press 9 for a human agent.");
+  return res.type("text/xml").send(vr.toString());
 }
