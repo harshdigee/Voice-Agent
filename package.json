@@ -5,7 +5,7 @@
   "description": "AI-powered Twilio voice assistant with OpenAI NLU + business API knowledge.",
   "main": "src/server.js",
   "scripts": {
-    "dev": "nodemon src/server.js",
+    "dev": "node --watch src/server.js",
     "start": "node src/server.js"
   },
   "dependencies": {
@@ -14,8 +14,10 @@
     "cors": "^2.8.5",
     "dotenv": "^16.6.1",
     "express": "^4.19.2",
+    "groq-sdk": "^1.2.1",
     "node-fetch": "^3.3.2",
-    "twilio": "^4.23.0",
+    "openai": "^6.42.0",
+    "ws": "^8.21.0",
     "zod": "^3.23.8"
   },
   "devDependencies": {

@@ -1,0 +1,143 @@
+{
+  "callId": "623ed6c8-7613-471c-bd79-8704be5f958a",
+  "language": "en",
+  "turns": [
+    {
+      "role": "digee",
+      "text": "Hello! Thank you for calling DigeeSell. I'm Digee, your AI assistant. How can I help you today?",
+      "ts": "2026-06-16T10:29:44.265Z"
+    },
+    {
+      "role": "caller",
+      "text": "What other services do you guys provide?",
+      "lang": "English",
+      "ts": "2026-06-16T10:29:56.471Z"
+    },
+    {
+      "role": "digee",
+      "text": "We offer a range of services including SEO, social media management, Google and Meta Ads, website design, email marketing, and influencer marketing, among others. Would you like to know more about a specific service?",
+      "ts": "2026-06-16T10:29:59.985Z"
+    },
+    {
+      "role": "caller",
+      "text": "Yeah, I want to know about SEO and what are the pricing you guys provide and what timeline you guys will like to look at services.",
+      "lang": "English",
+      "ts": "2026-06-16T10:30:29.512Z"
+    },
+    {
+      "role": "digee",
+      "text": "I can have one of our specialists call you back with exact pricing and timeline details. Would that work for you?",
+      "ts": "2026-06-16T10:30:31.109Z"
+    },
+    {
+      "role": "caller",
+      "text": "So",
+      "lang": "English",
+      "ts": "2026-06-16T10:30:42.100Z"
+    },
+    {
+      "role": "digee",
+      "text": "Sure, go ahead! How can I assist you further?",
+      "ts": "2026-06-16T10:30:44.032Z"
+    },
+    {
+      "role": "caller",
+      "text": "and",
+      "lang": "English",
+      "ts": "2026-06-16T10:30:46.594Z"
+    },
+    {
+      "role": "digee",
+      "text": "Yes, how can I help you?",
+      "ts": "2026-06-16T10:30:47.865Z"
+    },
+    {
+      "role": "caller",
+      "text": "No, I was saying, you can forward the call to that person if possible.",
+      "lang": "English",
+      "ts": "2026-06-16T10:30:57.965Z"
+    },
+    {
+      "role": "digee",
+      "text": "I can take your details and have one of our specialists call you back. Could you please share your contact information?",
+      "ts": "2026-06-16T10:30:59.866Z"
+    },
+    {
+      "role": "caller",
+      "text": "My contact number is 6389671091",
+      "lang": "English",
+      "ts": "2026-06-16T10:31:14.158Z"
+    },
+    {
+      "role": "digee",
+      "text": "Thank you! I’ll make sure one of our specialists contacts you at that number. Is there anything else I can help you with?",
+      "ts": "2026-06-16T10:31:15.819Z"
+    },
+    {
+      "role": "caller",
+      "text": "Okay.",
+      "lang": "English",
+      "ts": "2026-06-16T10:31:23.450Z"
+    },
+    {
+      "role": "digee",
+      "text": "Great! If you have any more questions later, feel free to reach out. Have a wonderful day!",
+      "ts": "2026-06-16T10:31:24.939Z"
+    },
+    {
+      "role": "caller",
+      "text": "Thank you.",
+      "lang": "English",
+      "ts": "2026-06-16T10:31:28.204Z"
+    },
+    {
+      "role": "digee",
+      "text": "You're welcome! If you need anything else, just let me know.",
+      "ts": "2026-06-16T10:31:29.681Z"
+    },
+    {
+      "role": "caller",
+      "text": "Thank you.",
+      "lang": "English",
+      "ts": "2026-06-16T10:31:32.985Z"
+    },
+    {
+      "role": "digee",
+      "text": "My pleasure! If there's anything more you need, feel free to ask.",
+      "ts": "2026-06-16T10:31:34.294Z"
+    },
+    {
+      "role": "caller",
+      "text": "I have another help for me.",
+      "lang": "English",
+      "ts": "2026-06-16T10:31:38.016Z"
+    },
+    {
+      "role": "digee",
+      "text": "Sure, go ahead! How can I assist you?",
+      "ts": "2026-06-16T10:31:41.514Z"
+    },
+    {
+      "role": "caller",
+      "text": "Thank you.",
+      "lang": "English",
+      "ts": "2026-06-16T10:31:46.972Z"
+    },
+    {
+      "role": "digee",
+      "text": "You're welcome! If you have a specific question or need help with something, just let me know.",
+      "ts": "2026-06-16T10:31:48.179Z"
+    },
+    {
+      "role": "caller",
+      "text": "Thank you.",
+      "lang": "English",
+      "ts": "2026-06-16T10:31:51.973Z"
+    },
+    {
+      "role": "digee",
+      "text": "You're welcome! Is there anything else I can help you with?",
+      "ts": "2026-06-16T10:31:53.001Z"
+    }
+  ]
+}

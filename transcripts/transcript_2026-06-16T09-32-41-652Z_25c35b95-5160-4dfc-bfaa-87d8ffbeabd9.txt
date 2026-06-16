@@ -1,0 +1,10 @@
+[2026-06-16T09:31:48.123Z] CALLER: Mm-hmm.
+[2026-06-16T09:31:49.469Z] DIGEE: Kya aapke paas koi sawal hai ya main aapki kisi tarah se madad kar sakti hoon? Anything else I can help with?
+[2026-06-16T09:31:51.246Z] CALLER: Salut !
+[2026-06-16T09:31:51.848Z] DIGEE: Namaste, aap kaise hain? Aur kuch batao, main aapki madad karne ke liye yahan hoon!
+[2026-06-16T09:32:04.088Z] CALLER: आप काउन बोद में हो?
+[2026-06-16T09:32:04.806Z] DIGEE: Main Digee hoon, DigeeSell ki assistant, aur main aapko digital marketing se related kisi bhi sawal ka jawab dena chahti hoon, toh bataiye, aapke paas kya sawal hai?
+[2026-06-16T09:32:11.818Z] CALLER: Hello.
+[2026-06-16T09:32:12.402Z] DIGEE: Hello, welcome to DigeeSell, how can I assist you today, aur kuch batao?
+[2026-06-16T09:32:36.433Z] CALLER: What are you working...
+[2026-06-16T09:32:37.962Z] DIGEE: I'm working with DigeeSell, a full-service digital marketing agency, and I'm here to help you with any questions or services we offer, like SEO, social media, or website design, anything specific you'd like to know?

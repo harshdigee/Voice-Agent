@@ -1,0 +1,16 @@
+[2026-06-16T10:33:10.535Z] DIGEE: Hello! Thank you for calling DigeeSell. I'm Digee, your AI assistant. How can I help you today?
+[2026-06-16T10:33:23.627Z] CALLER: Can you guys let me know what other services you provide?
+[2026-06-16T10:33:25.867Z] DIGEE: We offer a wide range of services including SEO, social media management, Google Ads, website design, email marketing, and more. Would you like more details on a specific service?
+[2026-06-16T10:33:32.260Z] CALLER: That's just a no-surnal.
+[2026-06-16T10:33:33.676Z] DIGEE: I apologize if that wasn’t clear. We provide services like content marketing, online reputation management, e-commerce solutions, and video production, among others. Would you like to know more about any particular service?
+[2026-06-16T10:33:38.349Z] CALLER: service SCO SCO
+[2026-06-16T10:33:39.723Z] DIGEE: It seems like you meant SEO. We specialize in improving website visibility through strategies like keyword research, on-page optimization, and link building. Would you like to explore how we can help your business with SEO?
+[2026-06-16T10:33:54.778Z] CALLER: Rædgjør det ikke.
+[2026-06-16T10:33:56.273Z] DIGEE: I’m here to help! Could you please clarify what you meant? I want to make sure I provide the information you need.
+[2026-06-16T10:34:07.389Z] CALLER: All right.
+[2026-06-16T10:34:08.530Z] DIGEE: Sure, go ahead! What would you like to know?
+[2026-06-16T10:34:18.388Z] CALLER: but I don't prize all the SEAL services that are required.
+[2026-06-16T10:34:19.867Z] DIGEE: I understand that you're looking for specific pricing for our SEO services. I can have one of our specialists call you back with exact details. Would that work for you?
+[2026-06-16T10:34:38.380Z] CALLER: that will work for me, but could you let me know what a
+[2026-06-16T10:34:39.540Z] DIGEE: Sure, please go ahead with your question! I'm here to help.
+[2026-06-16T10:34:48.833Z] CALLER: Okay, bye.

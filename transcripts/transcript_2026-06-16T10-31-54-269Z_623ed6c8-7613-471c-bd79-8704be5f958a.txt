@@ -1,0 +1,25 @@
+[2026-06-16T10:29:44.265Z] DIGEE: Hello! Thank you for calling DigeeSell. I'm Digee, your AI assistant. How can I help you today?
+[2026-06-16T10:29:56.471Z] CALLER: What other services do you guys provide?
+[2026-06-16T10:29:59.985Z] DIGEE: We offer a range of services including SEO, social media management, Google and Meta Ads, website design, email marketing, and influencer marketing, among others. Would you like to know more about a specific service?
+[2026-06-16T10:30:29.512Z] CALLER: Yeah, I want to know about SEO and what are the pricing you guys provide and what timeline you guys will like to look at services.
+[2026-06-16T10:30:31.109Z] DIGEE: I can have one of our specialists call you back with exact pricing and timeline details. Would that work for you?
+[2026-06-16T10:30:42.100Z] CALLER: So
+[2026-06-16T10:30:44.032Z] DIGEE: Sure, go ahead! How can I assist you further?
+[2026-06-16T10:30:46.594Z] CALLER: and
+[2026-06-16T10:30:47.865Z] DIGEE: Yes, how can I help you?
+[2026-06-16T10:30:57.965Z] CALLER: No, I was saying, you can forward the call to that person if possible.
+[2026-06-16T10:30:59.866Z] DIGEE: I can take your details and have one of our specialists call you back. Could you please share your contact information?
+[2026-06-16T10:31:14.158Z] CALLER: My contact number is 6389671091
+[2026-06-16T10:31:15.819Z] DIGEE: Thank you! I’ll make sure one of our specialists contacts you at that number. Is there anything else I can help you with?
+[2026-06-16T10:31:23.450Z] CALLER: Okay.
+[2026-06-16T10:31:24.939Z] DIGEE: Great! If you have any more questions later, feel free to reach out. Have a wonderful day!
+[2026-06-16T10:31:28.204Z] CALLER: Thank you.
+[2026-06-16T10:31:29.681Z] DIGEE: You're welcome! If you need anything else, just let me know.
+[2026-06-16T10:31:32.985Z] CALLER: Thank you.
+[2026-06-16T10:31:34.294Z] DIGEE: My pleasure! If there's anything more you need, feel free to ask.
+[2026-06-16T10:31:38.016Z] CALLER: I have another help for me.
+[2026-06-16T10:31:41.514Z] DIGEE: Sure, go ahead! How can I assist you?
+[2026-06-16T10:31:46.972Z] CALLER: Thank you.
+[2026-06-16T10:31:48.179Z] DIGEE: You're welcome! If you have a specific question or need help with something, just let me know.
+[2026-06-16T10:31:51.973Z] CALLER: Thank you.
+[2026-06-16T10:31:53.001Z] DIGEE: You're welcome! Is there anything else I can help you with?

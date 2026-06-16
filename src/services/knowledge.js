@@ -76,47 +76,13 @@ export async function searchKnowledge(query, topK = 3) {
   }
 }
 
-// ─── Answer a general question using KB + OpenAI ────────────────────────────
+// ─── Answer a general question using KB context (used as helper) ─────────────
+// The primary answer path is now groqService.chat() which calls searchKnowledge().
+// This function is kept for backward compatibility.
 export async function answerFromKnowledge(question) {
-  const chunks = await searchKnowledge(question, 4);
-
-  if (!chunks.length) {
-    return "I don't have specific information about that right now. Is there anything else I can help you with?";
-  }
-
-  const context = chunks.join("\n\n");
-
-  try {
-    const resp = await fetch("https://api.openai.com/v1/chat/completions", {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${CONFIG.OPENAI_API_KEY}`,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        model: CONFIG.OPENAI_MODEL,
-        temperature: 0.3,
-        max_tokens: 200,
-        messages: [
-          {
-            role: "system",
-            content: `You are a helpful voice assistant for DigeeSell. Answer the caller's question using ONLY the context below. 
-Keep answers SHORT (2-3 sentences max) since this is a phone call. 
-Do not mention "context" or "documents". Speak naturally.
-
-Context:
-${context}`,
-          },
-          { role: "user", content: question },
-        ],
-      }),
-    });
-    const json = await resp.json();
-    return json?.choices?.[0]?.message?.content?.trim() || "I'm not sure about that. Let me connect you to our team.";
-  } catch (err) {
-    log.error("answerFromKnowledge OpenAI error:", err.message);
-    return "I had trouble fetching that answer. Let me connect you to our team.";
-  }
+  const chunks = await searchKnowledge(question, 3);
+  if (!chunks.length) return "";
+  return chunks.join(" ");
 }
 
 // ─── Sales rep helpers (kept for backward compat) ───────────────────────────

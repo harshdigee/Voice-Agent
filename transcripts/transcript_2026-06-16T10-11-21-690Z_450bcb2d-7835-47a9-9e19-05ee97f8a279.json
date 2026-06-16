@@ -1,0 +1,22 @@
+{
+  "callId": "450bcb2d-7835-47a9-9e19-05ee97f8a279",
+  "language": "en",
+  "turns": [
+    {
+      "role": "digee",
+      "text": "Hello! Thank you for calling DigeeSell. I'm Digee, your AI assistant. You can ask me about our digital marketing services, pricing, or anything else. How can I help you today?",
+      "ts": "2026-06-16T10:11:06.494Z"
+    },
+    {
+      "role": "caller",
+      "text": "Thank you.",
+      "lang": "English",
+      "ts": "2026-06-16T10:11:16.823Z"
+    },
+    {
+      "role": "digee",
+      "text": "Thank you for calling DigeeSell! Have a wonderful day. Goodbye!",
+      "ts": "2026-06-16T10:11:17.640Z"
+    }
+  ]
+}

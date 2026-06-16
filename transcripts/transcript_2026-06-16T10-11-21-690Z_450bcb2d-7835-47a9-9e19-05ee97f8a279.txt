@@ -1,0 +1,3 @@
+[2026-06-16T10:11:06.494Z] DIGEE: Hello! Thank you for calling DigeeSell. I'm Digee, your AI assistant. You can ask me about our digital marketing services, pricing, or anything else. How can I help you today?
+[2026-06-16T10:11:16.823Z] CALLER: Thank you.
+[2026-06-16T10:11:17.640Z] DIGEE: Thank you for calling DigeeSell! Have a wonderful day. Goodbye!

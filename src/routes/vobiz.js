@@ -1,195 +1,114 @@
-// =============================================================
-// Vobiz Voice Routes — Inbound & Collect using Vobiz XML format
-// Vobiz docs: https://docs.vobiz.ai/xml/overview
-// Gather fields received: Speech, Digits, InputType
-// =============================================================
+/**
+ * vobiz.js — All Vobiz call routes
+ *
+ * POST /vobiz/inbound  → Answer URL; returns <Stream> to open real-time WebSocket
+ * WS   /vobiz/stream   → Bidirectional audio (handled in server.js → vobizStreamController)
+ * POST /vobiz/webhook  → Real-time call lifecycle events (ring, hangup, etc.)
+ * POST /vobiz/status   → Final call status (duration, disposition)
+ * POST /vobiz/outbound → Utility: fire an outbound call via Vobiz REST API
+ */
+
 import { Router } from "express";
-import { classifyUtterance } from "../services/nlu.js";
-import { fetchSalesReps, getCounts, listNames, answerFromKnowledge } from "../services/knowledge.js";
 import { CONFIG } from "../config.js";
 import { log } from "../utils/logger.js";
-import { speak, gather, hangup, dial, wait, response, sendXml } from "../services/vobizXml.js";
+import { stream, speak, hangup, response, sendXml } from "../services/vobizXml.js";
+import fetch from "node-fetch";
 
 const router = Router();
-const LANG = 'en-IN';
 
-function collectUrl() {
-  return `${CONFIG.PUBLIC_BASE_URL}/vobiz/collect`;
+// Resolve the public base URL from the *actual* request that reached us
+// (via ngrok / load balancer), falling back to the configured value.
+// This guarantees the WebSocket URL we hand back to Vobiz always points at
+// the same host the call arrived on — so a stale/typo'd PUBLIC_BASE_URL in
+// .env can never silently break the media stream.
+function publicBaseFromReq(req) {
+  const proto = (req.headers["x-forwarded-proto"] || "https").split(",")[0].trim();
+  const host  = req.headers["x-forwarded-host"] || req.headers.host;
+  if (host) return `${proto}://${host}`;
+  return CONFIG.PUBLIC_BASE_URL;
 }
 
-function collectGather(...children) {
-  return gather(
-    {
-      action: collectUrl(),
-      inputType: 'dtmf speech',
-      executionTimeout: 10,
-      language: LANG,
-      numDigits: 1,
-      hints: 'sales,pricing,services,team,help,goodbye',
-    },
-    ...children
-  );
-}
-
-// ─────────────────────────────────────────────────────────────
-// POST /vobiz/inbound — Vobiz calls this when a call is received
-// Vobiz sends: From, To, CallUUID, Direction, CallStatus
-// ─────────────────────────────────────────────────────────────
+// ─── POST /vobiz/inbound ──────────────────────────────────────────────────────
+// Vobiz calls this when a call is received (inbound) or answered (outbound).
+// We return <Stream> so all audio flows through our WebSocket pipeline.
 router.post("/inbound", (req, res) => {
-  log.info("Vobiz inbound →", { from: req.body.From, to: req.body.To, uuid: req.body.CallUUID });
+  const { From, To, CallUUID, Direction } = req.body || {};
+  log.info(`[vobiz/inbound] ${Direction || "inbound"} call from=${From} to=${To} uuid=${CallUUID}`);
 
-  const xml = response(
-    collectGather(
-      speak("Hello! Thanks for calling DigeeSell. I am your AI assistant.", LANG),
-      wait(1),
-      speak("You can ask me about our services, pricing, or team. Or press 9 to speak with a team member.", LANG)
-    ),
-    speak("We didn't receive any input. Please call back. Goodbye!", LANG),
-    hangup()
-  );
+  const base = publicBaseFromReq(req);
+  const wsUrl = base
+    .replace(/^https?:\/\//, (m) => (m.startsWith("https") ? "wss://" : "ws://"))
+    + "/vobiz/stream";
 
+  log.info(`[vobiz/inbound] connecting to stream: ${wsUrl}`);
+
+  // <Stream> hands the call off to our WebSocket handler.
+  // Digee's greeting is played inside the WS handler once the stream starts.
+  const xml = response(stream(wsUrl));
   sendXml(res, xml);
 });
 
-// ─────────────────────────────────────────────────────────────
-// POST /vobiz/collect — handles speech/DTMF input from <Gather>
-// Vobiz sends: Speech, Digits, InputType, SpeechConfidenceScore
-// ─────────────────────────────────────────────────────────────
-router.post("/collect", async (req, res) => {
-  const speech = (req.body.Speech || "").trim();
-  const digits = (req.body.Digits || "").trim();
-  const inputType = (req.body.InputType || "").toLowerCase();
-
-  log.info("vobiz/collect →", { speech, digits, inputType, score: req.body.SpeechConfidenceScore });
-
-  // ── Press 9 → forward to human ──────────────────────────────
-  if (digits === "9") {
-    const xml = response(
-      speak("Please hold. I am connecting you to a DigeeSell team member now.", LANG),
-      dial(CONFIG.FORWARD_TO_NUMBER, CONFIG.VOBIZ.NUMBER)
-    );
-    return sendXml(res, xml);
-  }
-
-  // ── No input at all ─────────────────────────────────────────
-  if (!speech && !digits) {
-    const xml = response(
-      collectGather(
-        speak("Sorry, I didn't hear anything. Please ask me a question or press 9 for a team member.", LANG)
-      ),
-      hangup()
-    );
-    return sendXml(res, xml);
-  }
-
-  // ── NLU classify ────────────────────────────────────────────
-  let nlu;
-  try {
-    nlu = await classifyUtterance(speech || digits);
-    log.info("NLU:", nlu);
-  } catch (err) {
-    log.error("NLU error:", err.message);
-    nlu = { intent: "KNOWLEDGE_QUERY" };
-  }
-
-  switch (nlu.intent) {
-
-    case "GOODBYE":
-      return sendXml(res, response(
-        speak("Thank you for calling DigeeSell. Have a great day! Goodbye!", LANG),
-        hangup()
-      ));
-
-    case "FORWARD_TO_HUMAN":
-      return sendXml(res, response(
-        speak("Connecting you to our team now. Please hold.", LANG),
-        dial(CONFIG.FORWARD_TO_NUMBER, CONFIG.VOBIZ.NUMBER)
-      ));
-
-    case "GET_SALES_REP_COUNT": {
-      const reps = await fetchSalesReps();
-      const { total, active } = getCounts(reps.data || []);
-      const text = nlu.params?.activeOnly
-        ? `There are ${active} active team members right now.`
-        : `There are ${total} team members in total.`;
-      return sendXml(res, response(
-        collectGather(speak(text + " Is there anything else I can help you with?", LANG))
-      ));
-    }
-
-    case "LIST_SALES_REPS": {
-      const reps = await fetchSalesReps();
-      const names = listNames(reps.data || [], 5);
-      const text = names.length
-        ? `Here are the first ${names.length} team members: ${names.join(", ")}.`
-        : "I could not find any team members.";
-      return sendXml(res, response(
-        collectGather(speak(text + " Is there anything else?", LANG))
-      ));
-    }
-
-    case "HELP":
-      return sendXml(res, response(
-        collectGather(
-          speak("You can ask me about DigeeSell services, pricing, social media marketing, SEO, and more. Or press 9 to speak with our team.", LANG)
-        )
-      ));
-
-    case "REPEAT":
-      return sendXml(res, response(
-        collectGather(
-          speak("I am your DigeeSell AI assistant. Ask me about our services, pricing, or team. Press 9 for a human agent.", LANG)
-        )
-      ));
-
-    case "KNOWLEDGE_QUERY":
-    default: {
-      let text;
-      if (speech.length > 3) {
-        try {
-          text = await answerFromKnowledge(speech);
-        } catch (err) {
-          log.error("Knowledge error:", err.message);
-          text = "I had trouble finding that answer. Press 9 to speak with our team.";
-        }
-      } else {
-        text = "I'm not sure about that. Press 9 to speak with our team, or ask another question.";
-      }
-      return sendXml(res, response(
-        collectGather(speak(text, LANG))
-      ));
-    }
-  }
-});
-
-// ─────────────────────────────────────────────────────────────
-// POST /vobiz/webhook — real-time call event notifications
-// Events: Ring, StartApp, Hangup — Vobiz sends these async
-// ─────────────────────────────────────────────────────────────
+// ─── POST /vobiz/webhook ──────────────────────────────────────────────────────
+// Async event notifications: Initiated, Ringing, Answered, Hangup
 router.post("/webhook", (req, res) => {
-  log.info("Vobiz webhook event →", {
-    event: req.body.Event,
-    status: req.body.CallStatus,
-    from: req.body.From,
-    to: req.body.To,
-    uuid: req.body.CallUUID,
-  });
+  const { Event, CallStatus, CallUUID, From, To, Duration } = req.body || {};
+  log.info(`[vobiz/webhook] event=${Event} status=${CallStatus} uuid=${CallUUID} from=${From} to=${To} duration=${Duration || "-"}`);
   res.status(200).json({ ok: true });
 });
 
-// ─────────────────────────────────────────────────────────────
-// POST /vobiz/status — hangup/completion callback for outbound
-// ─────────────────────────────────────────────────────────────
+// ─── POST /vobiz/status ───────────────────────────────────────────────────────
+// Final call completion callback (hangup_url)
 router.post("/status", (req, res) => {
-  log.info("Vobiz call completed →", {
-    status: req.body.CallStatus,
-    from: req.body.From,
-    to: req.body.To,
-    duration: req.body.Duration,
-    start: req.body.StartTime,
-    end: req.body.EndTime,
-  });
+  const { CallStatus, From, To, Duration, CallUUID } = req.body || {};
+  log.info(`[vobiz/status] status=${CallStatus} from=${From} to=${To} duration=${Duration}s uuid=${CallUUID}`);
   res.status(200).json({ ok: true });
+});
+
+// ─── POST /vobiz/outbound ─────────────────────────────────────────────────────
+// Convenience endpoint: trigger an outbound call via the Vobiz REST API.
+// Body: { to: "+91XXXXXXXXXX" }   (from / credentials pulled from .env)
+router.post("/outbound", async (req, res) => {
+  const to = req.body?.to || CONFIG.OUTBOUND_TO_NUMBER;
+  if (!to) return res.status(400).json({ error: "Missing 'to' number" });
+
+  const { AUTH_ID, AUTH_TOKEN, NUMBER: from } = CONFIG.VOBIZ;
+  if (!AUTH_ID || !AUTH_TOKEN || !from) {
+    return res.status(500).json({ error: "Vobiz credentials not configured in .env" });
+  }
+
+  const payload = {
+    from,
+    to,
+    answer_url:    `${CONFIG.PUBLIC_BASE_URL}/vobiz/inbound`,
+    answer_method: "POST",
+    hangup_url:    `${CONFIG.PUBLIC_BASE_URL}/vobiz/status`,
+    hangup_method: "POST",
+    time_limit:    3600,
+  };
+
+  try {
+    const apiRes = await fetch(`https://api.vobiz.ai/api/v1/Account/${AUTH_ID}/Call/`, {
+      method:  "POST",
+      headers: {
+        "X-Auth-ID":    AUTH_ID,
+        "X-Auth-Token": AUTH_TOKEN,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(payload),
+    });
+
+    const data = await apiRes.json();
+    if (apiRes.ok) {
+      log.info(`[vobiz/outbound] call fired to=${to} request_uuid=${data.request_uuid}`);
+      res.json({ ok: true, request_uuid: data.request_uuid, message: data.message });
+    } else {
+      log.error("[vobiz/outbound] Vobiz API error:", JSON.stringify(data));
+      res.status(apiRes.status).json({ ok: false, error: data });
+    }
+  } catch (err) {
+    log.error("[vobiz/outbound] fetch error:", err.message);
+    res.status(500).json({ ok: false, error: err.message });
+  }
 });
 
 export default router;

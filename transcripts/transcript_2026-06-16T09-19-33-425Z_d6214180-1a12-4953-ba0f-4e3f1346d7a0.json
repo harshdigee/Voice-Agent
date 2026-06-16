@@ -1,0 +1,28 @@
+{
+  "callId": "d6214180-1a12-4953-ba0f-4e3f1346d7a0",
+  "language": "French",
+  "turns": [
+    {
+      "role": "caller",
+      "text": "Thank you.",
+      "lang": "English",
+      "ts": "2026-06-16T09:19:28.544Z"
+    },
+    {
+      "role": "digee",
+      "text": "Thank you for calling DigeeSell! Have a wonderful day. Goodbye!",
+      "ts": "2026-06-16T09:19:29.368Z"
+    },
+    {
+      "role": "caller",
+      "text": "Alors,",
+      "lang": "French",
+      "ts": "2026-06-16T09:19:30.875Z"
+    },
+    {
+      "role": "digee",
+      "text": "It seems like you started in French, but don't worry, I'm here to help in English or Hindi, whichever you prefer - kya main aapki kuch madad kar sakta hoon? Anything else I can help with?",
+      "ts": "2026-06-16T09:19:31.712Z"
+    }
+  ]
+}

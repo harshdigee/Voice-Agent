@@ -1,0 +1,94 @@
+{
+  "callId": "1c0a56d0-a26e-4930-8d07-0a472a3cefbe",
+  "language": "en",
+  "turns": [
+    {
+      "role": "digee",
+      "text": "Hello! Thank you for calling DigeeSell. I'm Digee, your AI assistant. How can I help you today?",
+      "ts": "2026-06-16T10:33:10.535Z"
+    },
+    {
+      "role": "caller",
+      "text": "Can you guys let me know what other services you provide?",
+      "lang": "English",
+      "ts": "2026-06-16T10:33:23.627Z"
+    },
+    {
+      "role": "digee",
+      "text": "We offer a wide range of services including SEO, social media management, Google Ads, website design, email marketing, and more. Would you like more details on a specific service?",
+      "ts": "2026-06-16T10:33:25.867Z"
+    },
+    {
+      "role": "caller",
+      "text": "That's just a no-surnal.",
+      "lang": "English",
+      "ts": "2026-06-16T10:33:32.260Z"
+    },
+    {
+      "role": "digee",
+      "text": "I apologize if that wasn’t clear. We provide services like content marketing, online reputation management, e-commerce solutions, and video production, among others. Would you like to know more about any particular service?",
+      "ts": "2026-06-16T10:33:33.676Z"
+    },
+    {
+      "role": "caller",
+      "text": "service SCO SCO",
+      "lang": "English",
+      "ts": "2026-06-16T10:33:38.349Z"
+    },
+    {
+      "role": "digee",
+      "text": "It seems like you meant SEO. We specialize in improving website visibility through strategies like keyword research, on-page optimization, and link building. Would you like to explore how we can help your business with SEO?",
+      "ts": "2026-06-16T10:33:39.723Z"
+    },
+    {
+      "role": "caller",
+      "text": "Rædgjør det ikke.",
+      "lang": "Danish",
+      "ts": "2026-06-16T10:33:54.778Z"
+    },
+    {
+      "role": "digee",
+      "text": "I’m here to help! Could you please clarify what you meant? I want to make sure I provide the information you need.",
+      "ts": "2026-06-16T10:33:56.273Z"
+    },
+    {
+      "role": "caller",
+      "text": "All right.",
+      "lang": "English",
+      "ts": "2026-06-16T10:34:07.389Z"
+    },
+    {
+      "role": "digee",
+      "text": "Sure, go ahead! What would you like to know?",
+      "ts": "2026-06-16T10:34:08.530Z"
+    },
+    {
+      "role": "caller",
+      "text": "but I don't prize all the SEAL services that are required.",
+      "lang": "English",
+      "ts": "2026-06-16T10:34:18.388Z"
+    },
+    {
+      "role": "digee",
+      "text": "I understand that you're looking for specific pricing for our SEO services. I can have one of our specialists call you back with exact details. Would that work for you?",
+      "ts": "2026-06-16T10:34:19.867Z"
+    },
+    {
+      "role": "caller",
+      "text": "that will work for me, but could you let me know what a",
+      "lang": "English",
+      "ts": "2026-06-16T10:34:38.380Z"
+    },
+    {
+      "role": "digee",
+      "text": "Sure, please go ahead with your question! I'm here to help.",
+      "ts": "2026-06-16T10:34:39.540Z"
+    },
+    {
+      "role": "caller",
+      "text": "Okay, bye.",
+      "lang": "English",
+      "ts": "2026-06-16T10:34:48.833Z"
+    }
+  ]
+}
