@@ -1,0 +1,44 @@
+{
+  "callId": "bcc8abeb-d932-4968-a13b-7653e83749d2",
+  "language": "en",
+  "turns": [
+    {
+      "role": "digee",
+      "text": "Hello! Thank you for calling DigeeSell. I'm Digee, your AI assistant. How can I help you today?",
+      "ts": "2026-06-17T07:16:16.507Z"
+    },
+    {
+      "role": "caller",
+      "text": "I'll let you.",
+      "lang": "English",
+      "ts": "2026-06-17T07:16:26.642Z"
+    },
+    {
+      "role": "digee",
+      "text": "Sure, go ahead! How can I assist you today?",
+      "ts": "2026-06-17T07:16:33.301Z"
+    },
+    {
+      "role": "caller",
+      "text": "How are you?",
+      "lang": "English",
+      "ts": "2026-06-17T07:16:37.404Z"
+    },
+    {
+      "role": "digee",
+      "text": "I'm doing well, thank you! How can I help you today?",
+      "ts": "2026-06-17T07:16:39.444Z"
+    },
+    {
+      "role": "caller",
+      "text": "I'll let you.",
+      "lang": "English",
+      "ts": "2026-06-17T07:16:46.345Z"
+    },
+    {
+      "role": "digee",
+      "text": "Sure, go ahead! What would you like to discuss?",
+      "ts": "2026-06-17T07:16:48.261Z"
+    }
+  ]
+}

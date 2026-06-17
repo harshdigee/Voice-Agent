@@ -1,0 +1,28 @@
+{
+  "callId": "af2ae714-23ff-4ca8-8e45-54f0ce40ea10",
+  "language": "hi",
+  "turns": [
+    {
+      "role": "digee",
+      "text": "Hello, thank you for calling DigeeSell! My name is Riya from customer care. How may I help you today?",
+      "ts": "2026-06-17T08:05:10.335Z"
+    },
+    {
+      "role": "caller",
+      "text": "All in case you...",
+      "lang": "hindi",
+      "ts": "2026-06-17T08:05:20.044Z"
+    },
+    {
+      "role": "digee",
+      "text": "Yes, I'm listening — how can I help?",
+      "ts": "2026-06-17T08:05:27.107Z"
+    },
+    {
+      "role": "caller",
+      "text": "Okay, see you all.",
+      "lang": "hindi",
+      "ts": "2026-06-17T08:05:31.851Z"
+    }
+  ]
+}

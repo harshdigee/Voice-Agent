@@ -13,9 +13,10 @@ const FRAME_MS        = 20;           // process 20 ms frames
 const SAMPLE_RATE     = 8000;
 const FRAME_BYTES     = (SAMPLE_RATE * FRAME_MS) / 1000; // 160 bytes
 
-const ENERGY_THRESHOLD  = 450;        // mulaw-decoded RMS threshold
-const SPEECH_ON_FRAMES  = 3;          // ~60 ms to confirm speech started
-const SILENCE_OFF_FRAMES = 25;        // ~500 ms silence to confirm speech ended
+const ENERGY_THRESHOLD  = 550;        // mulaw-decoded RMS threshold (higher = less line-noise triggers)
+const SPEECH_ON_FRAMES  = 4;          // ~80 ms to confirm speech started
+const SILENCE_OFF_FRAMES = 30;        // ~600 ms silence before end — Hindi has natural pauses between words
+const MIN_SPEECH_BYTES  = 4800;       // ~600 ms @ 8 kHz — reject tiny/noisy chunks Whisper hallucinates on
 
 // Inline mulaw→PCM lookup (avoid circular import)
 const MULAW_TABLE = (() => {
@@ -79,7 +80,9 @@ export class VadDetector {
         if (this._silenceFrames >= SILENCE_OFF_FRAMES) {
           const audio = Buffer.concat(this._speechBuf);
           this._reset();
-          this.onSpeechEnd(audio);
+          if (audio.length >= MIN_SPEECH_BYTES) {
+            this.onSpeechEnd(audio);
+          }
         }
       } else {
         this._speechFrames = Math.max(0, this._speechFrames - 1);

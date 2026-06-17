@@ -1,0 +1,11 @@
+[2026-06-17T12:01:44.454Z] DIGEE: Hello, I am Riya.
+[2026-06-17T12:01:49.749Z] CALLER: पिन लेमेवाद करो गी।
+[2026-06-17T12:01:58.178Z] DIGEE: Ji, aapko kis cheez ki madad chahiye?
+[2026-06-17T12:01:58.468Z] CALLER: SEO package ke baare mein batao
+[2026-06-17T12:02:03.369Z] DIGEE: DigeeSell ka SEO package customized hota hai aapki industry aur competition ke hisaab se, aur pehla step free strategy call hota hai. Kya aapko iske liye kisi specialist se baat karni hai?
+[2026-06-17T12:02:18.067Z] CALLER: प्रिवी मज़े तुम से बात करने हैं
+[2026-06-17T12:02:23.630Z] DIGEE: Bilkul, main sun rahi hoon — aap kya kehna chahte hain?
+[2026-06-17T12:02:28.550Z] CALLER: झाल
+[2026-06-17T12:02:33.377Z] DIGEE: Aap thoda aur bata sakte hain? Main aapki madad karne ke liye yahan hoon.
+[2026-06-17T12:02:33.637Z] CALLER: क्या तुम मुस्टे बात पहना चाहोगी?
+[2026-06-17T12:02:38.714Z] DIGEE: Main aap se baat karne ke liye yahan hoon — aap kya kehna chahte hain?

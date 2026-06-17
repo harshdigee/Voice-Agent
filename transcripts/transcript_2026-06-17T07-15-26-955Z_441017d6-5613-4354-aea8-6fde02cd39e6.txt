@@ -1,0 +1,5 @@
+[2026-06-17T07:14:58.019Z] DIGEE: Hello! Thank you for calling DigeeSell. I'm Digee, your AI assistant. How can I help you today?
+[2026-06-17T07:15:07.600Z] CALLER: SEO.
+[2026-06-17T07:15:10.892Z] DIGEE: Are you looking for SEO services or information on how SEO can benefit your business?
+[2026-06-17T07:15:19.766Z] CALLER: Puxão que encerrou.
+[2026-06-17T07:15:22.413Z] DIGEE: It seems like there might have been a misunderstanding there. Could you please clarify what you're looking for?

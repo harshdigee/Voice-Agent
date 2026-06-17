@@ -2,9 +2,11 @@ import fetch from "node-fetch";
 import { createClient } from "@supabase/supabase-js";
 import { CONFIG } from "../config.js";
 import { log } from "../utils/logger.js";
+import { DIGEESELL_KB } from "../data/digeesellKb.js";
 
 // ─── Supabase client ────────────────────────────────────────────────────────
 let _supabase = null;
+let _semanticSearchAvailable = true;
 function getSupabase() {
   if (!_supabase && CONFIG.SUPABASE.URL && CONFIG.SUPABASE.SERVICE_KEY) {
     _supabase = createClient(CONFIG.SUPABASE.URL, CONFIG.SUPABASE.SERVICE_KEY);
@@ -17,7 +19,7 @@ async function embedText(text) {
   const resp = await fetch("https://api.openai.com/v1/embeddings", {
     method: "POST",
     headers: {
-      Authorization: `Bearer ${CONFIG.OPENAI_API_KEY}`,
+      Authorization: `Bearer ${CONFIG.OPENAI.API_KEY}`,
       "Content-Type": "application/json",
     },
     body: JSON.stringify({ model: "text-embedding-3-small", input: text }),
@@ -26,17 +28,33 @@ async function embedText(text) {
   return json?.data?.[0]?.embedding || null;
 }
 
+// ─── Inline fallback when Supabase is empty or RPC missing ───────────────────
+function searchFallbackKb(query, topK = 3) {
+  const terms = query.toLowerCase().split(/\s+/).filter((w) => w.length > 2);
+  const scored = DIGEESELL_KB.map((doc) => {
+    const hay = `${doc.category} ${doc.content}`.toLowerCase();
+    let score = 0;
+    for (const t of terms) if (hay.includes(t)) score++;
+    return { ...doc, score };
+  })
+    .filter((d) => d.score > 0)
+    .sort((a, b) => b.score - a.score)
+    .slice(0, topK);
+  if (scored.length) log.info(`Inline KB fallback returned ${scored.length} results`);
+  return scored.map((r) => r.content);
+}
+
 // ─── Search Supabase docs ─────────────────────────────────────────────────────
 // Uses semantic search (match_documents RPC) if available, else text search.
 export async function searchKnowledge(query, topK = 3) {
   const supabase = getSupabase();
   if (!supabase) {
-    log.warn("Supabase not configured, skipping knowledge search");
-    return [];
+    log.warn("Supabase not configured, using inline KB");
+    return searchFallbackKb(query, topK);
   }
 
   // Try semantic search first
-  if (CONFIG.OPENAI_API_KEY) {
+  if (CONFIG.OPENAI.API_KEY && _semanticSearchAvailable) {
     try {
       const embedding = await embedText(query);
       if (embedding) {
@@ -49,7 +67,12 @@ export async function searchKnowledge(query, topK = 3) {
           log.info(`Supabase semantic search returned ${data.length} results`);
           return data.map((r) => r.content);
         }
-        if (error) log.warn("match_documents RPC not available, using text search:", error.message);
+        if (error) {
+          log.warn("match_documents RPC not available, using text search:", error.message);
+          if (/function .*match_documents|schema cache/i.test(error.message || "")) {
+            _semanticSearchAvailable = false;
+          }
+        }
       }
     } catch (err) {
       log.warn("Semantic search failed, falling back to text search:", err.message);
@@ -67,12 +90,13 @@ export async function searchKnowledge(query, topK = 3) {
       .ilike("content", `%${searchTerm}%`)
       .limit(topK);
 
-    if (error) { log.error("Text search error:", error.message); return []; }
+    if (error) { log.error("Text search error:", error.message); return searchFallbackKb(query, topK); }
     log.info(`Text search for "${searchTerm}" returned ${(data || []).length} results`);
-    return (data || []).map((r) => r.content);
+    const rows = (data || []).map((r) => r.content);
+    return rows.length ? rows : searchFallbackKb(query, topK);
   } catch (err) {
     log.error("searchKnowledge fallback error:", err.message);
-    return [];
+    return searchFallbackKb(query, topK);
   }
 }
 

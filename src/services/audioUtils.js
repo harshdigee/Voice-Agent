@@ -57,6 +57,32 @@ export function encodeMulaw(pcm) {
 }
 
 /**
+ * Normalise PCM loudness for STT. Phone (μ-law) audio often arrives very quiet,
+ * and Whisper HALLUCINATES on quiet input — inventing phrases like "Merci",
+ * "Thank you", "Nancy how are you?". Boosting the signal to a healthy RMS level
+ * (with a safety cap so we don't blow up background hiss) dramatically improves
+ * transcription accuracy and language detection on phone calls.
+ */
+export function normalizePcm(pcm, targetRms = 3500, maxGain = 12) {
+  if (!pcm.length) return pcm;
+  let sum = 0;
+  for (let i = 0; i < pcm.length; i++) sum += pcm[i] * pcm[i];
+  const rms = Math.sqrt(sum / pcm.length);
+  if (rms < 1) return pcm;                 // pure silence — nothing to boost
+  let gain = targetRms / rms;
+  if (gain > maxGain) gain = maxGain;      // don't over-amplify near-silent frames
+  if (gain <= 1.05) return pcm;            // already loud enough
+  const out = new Int16Array(pcm.length);
+  for (let i = 0; i < pcm.length; i++) {
+    let v = Math.round(pcm[i] * gain);
+    if (v > 32767) v = 32767;
+    else if (v < -32768) v = -32768;
+    out[i] = v;
+  }
+  return out;
+}
+
+/**
  * Linear interpolation resampler — Int16Array in, Int16Array out
  */
 export function resample(samples, fromRate, toRate) {
@@ -129,12 +155,26 @@ export function parseWav(wav) {
 }
 
 /**
- * Convert accumulated mulaw chunks → 8 kHz WAV Buffer (for Groq Whisper)
+ * Convert accumulated mulaw chunks → 8 kHz WAV Buffer
  */
 export function mulawChunksToWav(chunks) {
   const raw = Buffer.concat(chunks);
   const pcm = decodeMulaw(raw);
   return buildWav(pcm, 8000, 1, 16);
+}
+
+/**
+ * Convert accumulated mulaw chunks → 16 kHz WAV Buffer (Whisper's native rate).
+ * Upsampling from 8 kHz → 16 kHz significantly improves Whisper accuracy on
+ * phone audio because Whisper internally processes at 16 kHz; giving it a native-
+ * rate file avoids a second lossy resample inside the model.
+ */
+export function mulawChunksToWav16k(chunks) {
+  const raw = Buffer.concat(chunks);
+  const pcm8k = decodeMulaw(raw);
+  const boosted = normalizePcm(pcm8k);          // lift quiet phone audio → less hallucination
+  const pcm16k = resample(boosted, 8000, 16000);
+  return buildWav(pcm16k, 16000, 1, 16);
 }
 
 /**

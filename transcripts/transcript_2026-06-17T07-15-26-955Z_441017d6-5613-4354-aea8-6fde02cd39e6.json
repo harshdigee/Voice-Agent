@@ -1,0 +1,33 @@
+{
+  "callId": "441017d6-5613-4354-aea8-6fde02cd39e6",
+  "language": "en",
+  "turns": [
+    {
+      "role": "digee",
+      "text": "Hello! Thank you for calling DigeeSell. I'm Digee, your AI assistant. How can I help you today?",
+      "ts": "2026-06-17T07:14:58.019Z"
+    },
+    {
+      "role": "caller",
+      "text": "SEO.",
+      "lang": "French",
+      "ts": "2026-06-17T07:15:07.600Z"
+    },
+    {
+      "role": "digee",
+      "text": "Are you looking for SEO services or information on how SEO can benefit your business?",
+      "ts": "2026-06-17T07:15:10.892Z"
+    },
+    {
+      "role": "caller",
+      "text": "Puxão que encerrou.",
+      "lang": "Portuguese",
+      "ts": "2026-06-17T07:15:19.766Z"
+    },
+    {
+      "role": "digee",
+      "text": "It seems like there might have been a misunderstanding there. Could you please clarify what you're looking for?",
+      "ts": "2026-06-17T07:15:22.413Z"
+    }
+  ]
+}

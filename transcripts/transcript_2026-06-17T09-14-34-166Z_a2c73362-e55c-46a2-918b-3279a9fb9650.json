@@ -1,0 +1,22 @@
+{
+  "callId": "a2c73362-e55c-46a2-918b-3279a9fb9650",
+  "language": "en",
+  "turns": [
+    {
+      "role": "digee",
+      "text": "Hello, I am Riya.",
+      "ts": "2026-06-17T09:14:13.686Z"
+    },
+    {
+      "role": "caller",
+      "text": "Very cool.",
+      "lang": "en",
+      "ts": "2026-06-17T09:14:18.983Z"
+    },
+    {
+      "role": "digee",
+      "text": "Thank you! How can I assist you today?",
+      "ts": "2026-06-17T09:14:24.089Z"
+    }
+  ]
+}

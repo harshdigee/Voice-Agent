@@ -1,0 +1,44 @@
+{
+  "callId": "d2d982e6-6f3f-4111-ae7d-b33a8e999e87",
+  "language": "en",
+  "turns": [
+    {
+      "role": "digee",
+      "text": "Hello, I am Riya.",
+      "ts": "2026-06-17T11:52:20.608Z"
+    },
+    {
+      "role": "caller",
+      "text": "I know.",
+      "lang": "en",
+      "ts": "2026-06-17T11:52:25.645Z"
+    },
+    {
+      "role": "digee",
+      "text": "Okay! How can I assist you today?",
+      "ts": "2026-06-17T11:52:31.025Z"
+    },
+    {
+      "role": "caller",
+      "text": "hello",
+      "lang": "en",
+      "ts": "2026-06-17T11:52:31.250Z"
+    },
+    {
+      "role": "digee",
+      "text": "Yes, go ahead — how can I help?",
+      "ts": "2026-06-17T11:52:31.860Z"
+    },
+    {
+      "role": "caller",
+      "text": "Yeah, good to hear you.",
+      "lang": "en",
+      "ts": "2026-06-17T11:52:46.965Z"
+    },
+    {
+      "role": "digee",
+      "text": "Thank you! What can I do for you today?",
+      "ts": "2026-06-17T11:52:49.577Z"
+    }
+  ]
+}

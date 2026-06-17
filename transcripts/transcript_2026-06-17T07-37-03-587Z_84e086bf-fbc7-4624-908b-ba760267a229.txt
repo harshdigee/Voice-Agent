@@ -1,0 +1,9 @@
+[2026-06-17T07:36:03.355Z] DIGEE: Hello! Thank you for calling DigeeSell. I'm Digee, your AI assistant. How can I help you today?
+[2026-06-17T07:36:26.752Z] CALLER: Nancy, how are you?
+[2026-06-17T07:36:30.362Z] DIGEE: I'm Digee, DigeeSell's voice assistant. I'm here to help you! How can I assist you today?
+[2026-06-17T07:36:39.584Z] CALLER: See you guys in a little bit.
+[2026-06-17T07:36:42.112Z] DIGEE: Sure, take your time! If you have any questions when you return, feel free to ask.
+[2026-06-17T07:36:50.605Z] CALLER: Welcome.
+[2026-06-17T07:36:52.851Z] DIGEE: Thank you! How can I assist you today?
+[2026-06-17T07:36:58.688Z] CALLER: Hang up the call.
+[2026-06-17T07:36:59.529Z] DIGEE: Thank you for calling DigeeSell! Have a wonderful day. Goodbye!

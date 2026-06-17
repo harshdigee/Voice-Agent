@@ -1,0 +1,55 @@
+{
+  "callId": "e0fec6a2-d895-4a76-8308-0a3a1b5f8c52",
+  "language": "en",
+  "turns": [
+    {
+      "role": "digee",
+      "text": "Hello! Thank you for calling DigeeSell. I'm Digee, your AI assistant. How can I help you today?",
+      "ts": "2026-06-17T07:06:53.068Z"
+    },
+    {
+      "role": "caller",
+      "text": "special",
+      "lang": "English",
+      "ts": "2026-06-17T07:07:03.473Z"
+    },
+    {
+      "role": "digee",
+      "text": "Sure, how can I assist you today?",
+      "ts": "2026-06-17T07:07:06.842Z"
+    },
+    {
+      "role": "caller",
+      "text": "I'll get a signal.",
+      "lang": "English",
+      "ts": "2026-06-17T07:07:13.765Z"
+    },
+    {
+      "role": "digee",
+      "text": "Sure, go ahead!",
+      "ts": "2026-06-17T07:07:15.968Z"
+    },
+    {
+      "role": "caller",
+      "text": "Hello.",
+      "lang": "English",
+      "ts": "2026-06-17T07:07:18.099Z"
+    },
+    {
+      "role": "digee",
+      "text": "Hi there! How can I help you today?",
+      "ts": "2026-06-17T07:07:19.493Z"
+    },
+    {
+      "role": "caller",
+      "text": "I will sing. How are you?",
+      "lang": "English",
+      "ts": "2026-06-17T07:07:27.009Z"
+    },
+    {
+      "role": "digee",
+      "text": "I'm here and ready to help! What can I assist you with today?",
+      "ts": "2026-06-17T07:07:28.815Z"
+    }
+  ]
+}

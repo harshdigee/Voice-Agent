@@ -25,7 +25,18 @@ export const CONFIG = {
     LLM_MODEL: process.env.GROQ_LLM_MODEL || "llama-3.3-70b-versatile",
     TTS_MODEL: process.env.GROQ_TTS_MODEL || "canopylabs/orpheus-v1-english",
     TTS_VOICE: process.env.GROQ_TTS_VOICE || "diana",
+    // Force the Whisper transcription language. "" = auto-detect Hindi/English.
+    // Set STT_LANGUAGE=hi if callers mostly speak Hindi/Hinglish (most reliable
+    // on noisy phone audio). Set "en" for English-only lines.
+    STT_LANGUAGE: process.env.GROQ_STT_LANGUAGE || "",
+    DEBUG_STT_AUDIO: process.env.DEBUG_STT_AUDIO === "true",
   },
+
+  // ── Agent persona ────────────────────────────────────────────────────────
+  AGENT_NAME:    process.env.AGENT_NAME    || "Riya",
+  COMPANY_NAME:  process.env.COMPANY_NAME  || "DigeeSell",
+  // "short" = testing greeting; "full" = production intro
+  GREETING_MODE: process.env.GREETING_MODE || "short",
 
   // ── Supabase knowledge base (optional) ──────────────────────────────────
   SUPABASE: {
@@ -40,6 +51,13 @@ export const CONFIG = {
     NUMBER:     process.env.VOBIZ_NUMBER     || "",
   },
 
+  // ── ElevenLabs — Hindi TTS (faster + better quality than OpenAI for Hinglish) ─
+  ELEVENLABS: {
+    API_KEY:  process.env.ELEVENLABS_API_KEY  || "",
+    VOICE_ID: process.env.ELEVENLABS_VOICE_ID || "Ms9OTvWb99V6DwRHZn6q",
+    MODEL:    process.env.ELEVENLABS_MODEL    || "eleven_turbo_v2_5",
+  },
+
   // ── Call forwarding ──────────────────────────────────────────────────────
   FORWARD_TO_NUMBER: process.env.FORWARD_TO_NUMBER || "",
 };
@@ -47,11 +65,14 @@ export const CONFIG = {
 console.log("==============================================");
 console.log("🤖 Digee — DigeeSell Voice AI (Vobiz)");
 console.log("🌐 PUBLIC_BASE_URL :", CONFIG.PUBLIC_BASE_URL || "(none)");
-console.log("⚡ GROQ STT        :", CONFIG.GROQ.STT_MODEL);
+console.log("⚡ GROQ STT        :", CONFIG.GROQ.STT_MODEL,
+  CONFIG.GROQ.STT_LANGUAGE ? `(language=${CONFIG.GROQ.STT_LANGUAGE})` : "(auto-detect)");
+console.log("👋 Greeting        :", CONFIG.GREETING_MODE);
 console.log("🤖 LLM (agent)     :", CONFIG.OPENAI.API_KEY
   ? `OpenAI ${CONFIG.OPENAI.MODEL}`
   : `Groq ${CONFIG.GROQ.LLM_MODEL} (add OPENAI_API_KEY to use GPT)`);
 console.log("⚡ GROQ TTS        :", `${CONFIG.GROQ.TTS_MODEL} / ${CONFIG.GROQ.TTS_VOICE}`);
+console.log("🎙️ ElevenLabs TTS  :", CONFIG.ELEVENLABS.API_KEY ? `${CONFIG.ELEVENLABS.MODEL} / voice=${CONFIG.ELEVENLABS.VOICE_ID.slice(0,8)}…` : "(not set — using OpenAI TTS for Hindi)");
 console.log("🔑 GROQ API KEY    :", mask(CONFIG.GROQ.API_KEY));
 console.log("🔑 OPENAI API KEY  :", CONFIG.OPENAI.API_KEY ? mask(CONFIG.OPENAI.API_KEY) : "(not set — using Groq LLM)");
 console.log("📞 VOBIZ NUMBER    :", CONFIG.VOBIZ.NUMBER || "(not set)");

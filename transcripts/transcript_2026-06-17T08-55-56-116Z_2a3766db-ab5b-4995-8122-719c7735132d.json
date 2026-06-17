@@ -1,0 +1,28 @@
+{
+  "callId": "2a3766db-ab5b-4995-8122-719c7735132d",
+  "language": "en",
+  "turns": [
+    {
+      "role": "digee",
+      "text": "Hello, I am Riya.",
+      "ts": "2026-06-17T08:55:20.058Z"
+    },
+    {
+      "role": "caller",
+      "text": "Hindi me baat keroe.",
+      "lang": "hi",
+      "ts": "2026-06-17T08:55:25.641Z"
+    },
+    {
+      "role": "digee",
+      "text": "Bilkul, main aapki madad karne ke liye yahan hoon! Aap kya poochna chahte hain?",
+      "ts": "2026-06-17T08:55:33.468Z"
+    },
+    {
+      "role": "caller",
+      "text": "مجھے گوگل ایڈز کے بارے بتاؤں",
+      "lang": "en",
+      "ts": "2026-06-17T08:55:52.820Z"
+    }
+  ]
+}

@@ -1,0 +1,4 @@
+[2026-06-17T08:05:10.335Z] DIGEE: Hello, thank you for calling DigeeSell! My name is Riya from customer care. How may I help you today?
+[2026-06-17T08:05:20.044Z] CALLER: All in case you...
+[2026-06-17T08:05:27.107Z] DIGEE: Yes, I'm listening — how can I help?
+[2026-06-17T08:05:31.851Z] CALLER: Okay, see you all.

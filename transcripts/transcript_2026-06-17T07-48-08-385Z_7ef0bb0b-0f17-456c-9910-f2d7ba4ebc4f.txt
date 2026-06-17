@@ -1,0 +1,9 @@
+[2026-06-17T07:47:06.782Z] DIGEE: Hello, thank you for calling DigeeSell! My name is Riya from customer care. How may I help you today?
+[2026-06-17T07:47:23.830Z] CALLER: क्या कर रही हो।
+[2026-06-17T07:47:29.658Z] DIGEE: Main theek hoon, dhanyavaad! Aap kaise hain? Aapko kis tarah ki madad chahiye?
+[2026-06-17T07:47:40.337Z] CALLER: Hello, can I see who?
+[2026-06-17T07:47:44.802Z] DIGEE: Hello! I’m Riya from DigeeSell customer care — here to help you personally. What can I do for you today?
+[2026-06-17T07:47:52.552Z] CALLER: The caller speaks Hindi or English.
+[2026-06-17T07:47:56.563Z] DIGEE: I can understand both Hindi and English, so feel free to speak in whichever language you’re comfortable with! How can I assist you today?
+[2026-06-17T07:48:04.278Z] CALLER: Thank you for watching.
+[2026-06-17T07:48:07.027Z] DIGEE: You're welcome! Is there anything specific you’d like to know or discuss?

@@ -1,0 +1,15 @@
+[2026-06-16T11:05:34.931Z] DIGEE: Hello! Thank you for calling DigeeSell. I'm Digee, your AI assistant. How can I help you today?
+[2026-06-16T11:05:47.330Z] CALLER: I'm going to ask you a question.
+[2026-06-16T11:05:49.004Z] DIGEE: Sure, go ahead! What would you like to ask?
+[2026-06-16T11:05:58.465Z] CALLER: What are the services of SCO?
+[2026-06-16T11:06:00.515Z] DIGEE: SEO, or Search Engine Optimization, includes services like keyword research, on-page and technical SEO, content creation, and link building to improve your website's visibility on search engines. Is there anything else I can help you with?
+[2026-06-16T11:06:20.552Z] CALLER: And what are the prices of SCO?
+[2026-06-16T11:06:21.773Z] DIGEE: I can have one of our specialists call you back with exact pricing details — would that work for you?
+[2026-06-16T11:06:27.018Z] CALLER: Thank you.
+[2026-06-16T11:06:28.375Z] DIGEE: You're welcome! Is there anything else I can help you with?
+[2026-06-16T11:06:34.793Z] CALLER: Okay, so you don't have any information about what the product of SEO services?
+[2026-06-16T11:06:36.565Z] DIGEE: I can connect you with a specialist who can provide detailed information about our SEO services and offerings. Would you like that?
+[2026-06-16T11:06:48.699Z] CALLER: No.
+[2026-06-16T11:06:50.327Z] DIGEE: Sure! If you have any other questions or need assistance, feel free to ask.
+[2026-06-16T11:07:00.402Z] CALLER: Let me connect me to a derivative.
+[2026-06-16T11:07:02.117Z] DIGEE: It seems like you might be looking for a specific service or team member. Could you clarify what you mean by "derivative"? I'm here to help!

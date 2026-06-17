@@ -4,7 +4,16 @@
 -- 1. Enable vector extension (if not already enabled)
 create extension if not exists vector;
 
--- 2. Create the match_documents function for semantic search
+-- 2. Documents table (if not already created)
+create table if not exists documents (
+  id bigserial primary key,
+  content text not null,
+  category text,
+  embedding vector(1536),
+  created_at timestamptz default now()
+);
+
+-- 3. Create the match_documents function for semantic search
 create or replace function match_documents (
   query_embedding vector(1536),
   match_threshold float,

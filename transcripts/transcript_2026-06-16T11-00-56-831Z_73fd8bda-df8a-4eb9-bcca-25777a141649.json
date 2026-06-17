@@ -1,0 +1,55 @@
+{
+  "callId": "73fd8bda-df8a-4eb9-bcca-25777a141649",
+  "language": "en",
+  "turns": [
+    {
+      "role": "digee",
+      "text": "Hello! Thank you for calling DigeeSell. I'm Digee, your AI assistant. How can I help you today?",
+      "ts": "2026-06-16T11:00:13.944Z"
+    },
+    {
+      "role": "caller",
+      "text": "Okay.",
+      "lang": "English",
+      "ts": "2026-06-16T11:00:25.079Z"
+    },
+    {
+      "role": "digee",
+      "text": "Sure, go ahead! How can I help you today?",
+      "ts": "2026-06-16T11:00:27.177Z"
+    },
+    {
+      "role": "caller",
+      "text": "Thank you.",
+      "lang": "English",
+      "ts": "2026-06-16T11:00:36.850Z"
+    },
+    {
+      "role": "digee",
+      "text": "You're welcome! Is there anything else I can assist you with?",
+      "ts": "2026-06-16T11:00:38.794Z"
+    },
+    {
+      "role": "caller",
+      "text": "Wow, yeah, I'm on.",
+      "lang": "English",
+      "ts": "2026-06-16T11:00:47.231Z"
+    },
+    {
+      "role": "digee",
+      "text": "Great! What would you like to know?",
+      "ts": "2026-06-16T11:00:49.450Z"
+    },
+    {
+      "role": "caller",
+      "text": "Bye.",
+      "lang": "English",
+      "ts": "2026-06-16T11:00:51.945Z"
+    },
+    {
+      "role": "digee",
+      "text": "Thank you for calling DigeeSell! Have a wonderful day. Goodbye!",
+      "ts": "2026-06-16T11:00:52.754Z"
+    }
+  ]
+}

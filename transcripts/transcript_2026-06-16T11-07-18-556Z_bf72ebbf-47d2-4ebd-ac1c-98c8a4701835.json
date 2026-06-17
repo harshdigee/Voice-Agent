@@ -1,0 +1,88 @@
+{
+  "callId": "bf72ebbf-47d2-4ebd-ac1c-98c8a4701835",
+  "language": "en",
+  "turns": [
+    {
+      "role": "digee",
+      "text": "Hello! Thank you for calling DigeeSell. I'm Digee, your AI assistant. How can I help you today?",
+      "ts": "2026-06-16T11:05:34.931Z"
+    },
+    {
+      "role": "caller",
+      "text": "I'm going to ask you a question.",
+      "lang": "English",
+      "ts": "2026-06-16T11:05:47.330Z"
+    },
+    {
+      "role": "digee",
+      "text": "Sure, go ahead! What would you like to ask?",
+      "ts": "2026-06-16T11:05:49.004Z"
+    },
+    {
+      "role": "caller",
+      "text": "What are the services of SCO?",
+      "lang": "English",
+      "ts": "2026-06-16T11:05:58.465Z"
+    },
+    {
+      "role": "digee",
+      "text": "SEO, or Search Engine Optimization, includes services like keyword research, on-page and technical SEO, content creation, and link building to improve your website's visibility on search engines. Is there anything else I can help you with?",
+      "ts": "2026-06-16T11:06:00.515Z"
+    },
+    {
+      "role": "caller",
+      "text": "And what are the prices of SCO?",
+      "lang": "English",
+      "ts": "2026-06-16T11:06:20.552Z"
+    },
+    {
+      "role": "digee",
+      "text": "I can have one of our specialists call you back with exact pricing details — would that work for you?",
+      "ts": "2026-06-16T11:06:21.773Z"
+    },
+    {
+      "role": "caller",
+      "text": "Thank you.",
+      "lang": "English",
+      "ts": "2026-06-16T11:06:27.018Z"
+    },
+    {
+      "role": "digee",
+      "text": "You're welcome! Is there anything else I can help you with?",
+      "ts": "2026-06-16T11:06:28.375Z"
+    },
+    {
+      "role": "caller",
+      "text": "Okay, so you don't have any information about what the product of SEO services?",
+      "lang": "English",
+      "ts": "2026-06-16T11:06:34.793Z"
+    },
+    {
+      "role": "digee",
+      "text": "I can connect you with a specialist who can provide detailed information about our SEO services and offerings. Would you like that?",
+      "ts": "2026-06-16T11:06:36.565Z"
+    },
+    {
+      "role": "caller",
+      "text": "No.",
+      "lang": "English",
+      "ts": "2026-06-16T11:06:48.699Z"
+    },
+    {
+      "role": "digee",
+      "text": "Sure! If you have any other questions or need assistance, feel free to ask.",
+      "ts": "2026-06-16T11:06:50.327Z"
+    },
+    {
+      "role": "caller",
+      "text": "Let me connect me to a derivative.",
+      "lang": "English",
+      "ts": "2026-06-16T11:07:00.402Z"
+    },
+    {
+      "role": "digee",
+      "text": "It seems like you might be looking for a specific service or team member. Could you clarify what you mean by \"derivative\"? I'm here to help!",
+      "ts": "2026-06-16T11:07:02.117Z"
+    }
+  ]
+}

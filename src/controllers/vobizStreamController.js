@@ -29,13 +29,25 @@
 import fs   from "fs";
 import path from "path";
 import { VadDetector } from "../services/vadService.js";
-import { transcribe, chat, speak } from "../services/groqService.js";
+import {
+  transcribe, chat, speak, inferSpeechLanguage,
+  isGreetingOnly, isLanguagePreference,
+} from "../services/groqService.js";
+import { CONFIG } from "../config.js";
 import { log } from "../utils/logger.js";
 
-const GREETING = "Hello! Thank you for calling DigeeSell. I'm Digee, your AI assistant. How can I help you today?";
+function buildGreeting() {
+  const name = CONFIG.AGENT_NAME || "Riya";
+  if (CONFIG.GREETING_MODE === "full") {
+    return `Hello, thank you for calling ${CONFIG.COMPANY_NAME}! My name is ${name} from customer care. How may I help you today?`;
+  }
+  return `Hello, I am ${name}.`;
+}
 
-// How long after agent stops speaking to ignore inbound audio (echo tail guard)
-const ECHO_GUARD_MS = 600;
+const GREETING = buildGreeting();
+
+// Echo tail after agent stops — keep short so caller isn't blocked from speaking.
+const ECHO_GUARD_MS = 450;
 
 // ─── Active call registry ─────────────────────────────────────────────────────
 const activeCalls = new Map();
@@ -50,11 +62,13 @@ export function handleVobizStream(ws) {
     callId:             null,
     streamId:           null,
     language:           "en",   // confirmed language
-    hindiTurnCount:     0,      // consecutive Hindi turns before confirming switch
+    hindiTurnCount:     0,      // Hindi turns before confirming switch
     conversation:       [],     // { role, content } for LLM context
     transcript:         [],     // saved { role, text, ts }
     isAgentSpeaking:    false,
     isBusy:             false,
+    pendingUtterance:   null,   // queue one utterance if pipeline was busy
+    bargedIn:           false,
     greetingPlayed:     false,  // unlocked after greeting finishes on caller's phone
     greetingFallbackTimer: null,
     agentLastStoppedAt: 0,
@@ -70,6 +84,7 @@ export function handleVobizStream(ws) {
 
       if (s.isAgentSpeaking) {
         log.info("[vad] Barge-in — flushing Vobiz audio + resetting VAD buffer");
+        s.bargedIn = true;   // tells streaming pipeline to stop after current sentence
         _clearAudio(s);
         s.vad.resetSpeechBuffer();
       }
@@ -91,7 +106,8 @@ export function handleVobizStream(ws) {
       }
 
       if (s.isBusy) {
-        log.info("[vad] Pipeline busy — discarding utterance");
+        s.pendingUtterance = audioBuf;
+        log.info("[vad] Pipeline busy — queued latest utterance");
         return;
       }
 
@@ -131,14 +147,29 @@ export function handleVobizStream(ws) {
         break;
       }
 
-      case "media":
-        // Ignore inbound audio until greeting has played — prevents line noise from
-        // triggering barge-in/clearAudio and killing the greeting TTS.
-        if (!s.greetingPlayed && msg.media?.payload) return;
-        if (msg.media?.payload) {
-          s.vad.feed(Buffer.from(msg.media.payload, "base64"));
+      case "media": {
+        if (!msg.media?.payload) break;
+
+        // Ignore inbound audio until greeting has played — prevents line noise
+        // from triggering barge-in/clearAudio and killing the greeting TTS.
+        if (!s.greetingPlayed) break;
+
+        // HALF-DUPLEX ECHO SUPPRESSION (the key listening fix):
+        // While the agent is speaking — and during the echo tail right after it
+        // stops — do NOT feed caller audio into the VAD. The phone speaker plays
+        // the agent's TTS, the phone mic picks it up, and Whisper was transcribing
+        // that echo ("How are you?", "Are you all right?") and replying to itself.
+        // By staying deaf while we talk, only the caller's real speech is heard.
+        const msSinceAgentStopped = Date.now() - s.agentLastStoppedAt;
+        if (s.isAgentSpeaking || msSinceAgentStopped < ECHO_GUARD_MS) {
+          // Drop any half-captured echo so it can't bleed into the next utterance.
+          if (s.vad.isSpeaking) s.vad.reset();
+          break;
         }
+
+        s.vad.feed(Buffer.from(msg.media.payload, "base64"));
         break;
+      }
 
       // Vobiz ack: the audio up to this checkpoint finished playing on caller end
       case "playedStream":
@@ -173,11 +204,13 @@ export function handleVobizStream(ws) {
   });
 }
 
-// ─── Speech pipeline: STT → LLM → TTS ────────────────────────────────────────
+// ─── Speech pipeline: STT → LLM → single TTS (faster on phone) ───────────────
 async function _handleSpeech(s, audioBuf) {
-  s.isBusy = true;
+  s.isBusy    = true;
+  s.bargedIn  = false;
   try {
-    // 1. STT — Groq Whisper
+    if (s.ws.readyState !== 1) return;
+
     const { text, language } = await transcribe(audioBuf);
     if (!text || text.trim().length < 2) {
       log.info("[pipeline] Empty transcription — skipping");
@@ -185,23 +218,17 @@ async function _handleSpeech(s, audioBuf) {
     }
     log.info(`[pipeline] caller (${language}): "${text}"`);
 
-    // Language detection: only switch to Hindi after 2 consecutive Hindi turns
-    // with 3+ words. Short fillers / single words never change the language.
-    const detectedLang   = (language || "en").toLowerCase();
-    const isHindiText    = detectedLang === "hi" || detectedLang === "hindi";
-    const hasEnoughWords = text.trim().split(/\s+/).length >= 3;
-
-    if (isHindiText && hasEnoughWords) {
+    const scriptLang = inferSpeechLanguage(text);
+    if (scriptLang === "hi") {
       s.hindiTurnCount++;
-      if (s.hindiTurnCount >= 2) s.language = "hi";
-    } else if (!isHindiText) {
+      s.language = "hi";
+    } else if (text.trim().split(/\s+/).length >= 2) {
       s.hindiTurnCount = 0;
       s.language = "en";
     }
 
     s.transcript.push({ role: "caller", text, lang: language, ts: _now() });
 
-    // 2. Farewell detection — only unambiguous goodbye words
     if (_isFarewell(text)) {
       const bye = s.language === "hi"
         ? "Shukriya call karne ke liye! Aapka din bahut accha rahe."
@@ -212,19 +239,49 @@ async function _handleSpeech(s, audioBuf) {
       return;
     }
 
-    // 3. LLM (OpenAI if key set, else Groq LLaMA)
-    const reply = await chat(text, s.conversation, s.language);
-    log.info(`[pipeline] Digee: "${reply}"`);
+    // Fast path: hello/hi/namaste — no LLM, no repeated intro
+    if (isGreetingOnly(text)) {
+      const reply = s.language === "hi"
+        ? "Ji, boliye — main sun rahi hoon."
+        : "Yes, go ahead — how can I help?";
+      await _sendSpeech(s, reply);
+      s.transcript.push({ role: "digee", text: reply, ts: _now() });
+      s.conversation.push({ role: "user",      content: text  });
+      s.conversation.push({ role: "assistant", content: reply });
+      return;
+    }
 
-    s.conversation.push({ role: "user",      content: text  });
-    s.conversation.push({ role: "assistant", content: reply });
-    s.transcript.push({ role: "digee", text: reply, ts: _now() });
+    // Fast path: caller asks to speak in Hindi — no KB/LLM delay.
+    if (isLanguagePreference(text)) {
+      s.language = "hi";
+      const reply = "Bilkul, Hindi mein baat karte hain. Aap bataiye.";
+      await _sendSpeech(s, reply);
+      s.transcript.push({ role: "digee", text: reply, ts: _now() });
+      s.conversation.push({ role: "user",      content: text  });
+      s.conversation.push({ role: "assistant", content: reply });
+      return;
+    }
 
-    // 4. TTS → stream mulaw to Vobiz
-    await _sendSpeech(s, reply);
+    // One LLM call + one TTS call per turn = lower latency on Vobiz
+    const fullReply = await chat(text, s.conversation, s.language);
+    if (!fullReply || s.bargedIn || s.ws.readyState !== 1) return;
+
+    log.info(`[pipeline] Digee: "${fullReply}"`);
+    await _sendSpeech(s, fullReply);
+    s.conversation.push({ role: "user",      content: text      });
+    s.conversation.push({ role: "assistant", content: fullReply });
+    s.transcript.push({ role: "digee", text: fullReply, ts: _now() });
 
   } finally {
-    s.isBusy = false;
+    s.isBusy   = false;
+    s.bargedIn = false;
+    if (s.pendingUtterance) {
+      const next = s.pendingUtterance;
+      s.pendingUtterance = null;
+      _handleSpeech(s, next).catch((err) =>
+        log.error("[vobiz-stream] queued handleSpeech error:", err.message)
+      );
+    }
   }
 }
 

@@ -1,0 +1,44 @@
+{
+  "callId": "8d820336-ed89-4788-979d-60447065a9c0",
+  "language": "en",
+  "turns": [
+    {
+      "role": "digee",
+      "text": "Hello, I am Riya.",
+      "ts": "2026-06-17T08:46:46.399Z"
+    },
+    {
+      "role": "caller",
+      "text": "hello",
+      "lang": "en",
+      "ts": "2026-06-17T08:46:51.217Z"
+    },
+    {
+      "role": "digee",
+      "text": "Yes, go ahead — how can I help?",
+      "ts": "2026-06-17T08:46:51.852Z"
+    },
+    {
+      "role": "caller",
+      "text": "as seal package given in button.",
+      "lang": "en",
+      "ts": "2026-06-17T08:47:06.062Z"
+    },
+    {
+      "role": "digee",
+      "text": "Could you please clarify what specific package or service you're referring to? I'm here to help!",
+      "ts": "2026-06-17T08:47:11.464Z"
+    },
+    {
+      "role": "caller",
+      "text": "India Vat Karogi",
+      "lang": "en",
+      "ts": "2026-06-17T08:47:20.362Z"
+    },
+    {
+      "role": "digee",
+      "text": "Are you asking about VAT registration or compliance services? If so, I can have one of our specialists call you back with more details. Would that work for you?",
+      "ts": "2026-06-17T08:47:24.762Z"
+    }
+  ]
+}

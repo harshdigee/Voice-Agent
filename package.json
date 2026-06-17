@@ -6,7 +6,8 @@
   "main": "src/server.js",
   "scripts": {
     "dev": "node --watch src/server.js",
-    "start": "node src/server.js"
+    "start": "node src/server.js",
+    "seed-kb": "node scripts/seedKnowledge.js"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.106.2",

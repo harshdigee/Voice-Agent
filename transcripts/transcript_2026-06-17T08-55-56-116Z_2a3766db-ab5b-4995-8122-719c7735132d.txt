@@ -1,0 +1,4 @@
+[2026-06-17T08:55:20.058Z] DIGEE: Hello, I am Riya.
+[2026-06-17T08:55:25.641Z] CALLER: Hindi me baat keroe.
+[2026-06-17T08:55:33.468Z] DIGEE: Bilkul, main aapki madad karne ke liye yahan hoon! Aap kya poochna chahte hain?
+[2026-06-17T08:55:52.820Z] CALLER: مجھے گوگل ایڈز کے بارے بتاؤں

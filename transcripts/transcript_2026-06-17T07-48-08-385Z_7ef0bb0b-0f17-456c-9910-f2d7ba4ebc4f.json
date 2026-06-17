@@ -1,0 +1,55 @@
+{
+  "callId": "7ef0bb0b-0f17-456c-9910-f2d7ba4ebc4f",
+  "language": "en",
+  "turns": [
+    {
+      "role": "digee",
+      "text": "Hello, thank you for calling DigeeSell! My name is Riya from customer care. How may I help you today?",
+      "ts": "2026-06-17T07:47:06.782Z"
+    },
+    {
+      "role": "caller",
+      "text": "क्या कर रही हो।",
+      "lang": "hindi",
+      "ts": "2026-06-17T07:47:23.830Z"
+    },
+    {
+      "role": "digee",
+      "text": "Main theek hoon, dhanyavaad! Aap kaise hain? Aapko kis tarah ki madad chahiye?",
+      "ts": "2026-06-17T07:47:29.658Z"
+    },
+    {
+      "role": "caller",
+      "text": "Hello, can I see who?",
+      "lang": "english",
+      "ts": "2026-06-17T07:47:40.337Z"
+    },
+    {
+      "role": "digee",
+      "text": "Hello! I’m Riya from DigeeSell customer care — here to help you personally. What can I do for you today?",
+      "ts": "2026-06-17T07:47:44.802Z"
+    },
+    {
+      "role": "caller",
+      "text": "The caller speaks Hindi or English.",
+      "lang": "english",
+      "ts": "2026-06-17T07:47:52.552Z"
+    },
+    {
+      "role": "digee",
+      "text": "I can understand both Hindi and English, so feel free to speak in whichever language you’re comfortable with! How can I assist you today?",
+      "ts": "2026-06-17T07:47:56.563Z"
+    },
+    {
+      "role": "caller",
+      "text": "Thank you for watching.",
+      "lang": "english",
+      "ts": "2026-06-17T07:48:04.278Z"
+    },
+    {
+      "role": "digee",
+      "text": "You're welcome! Is there anything specific you’d like to know or discuss?",
+      "ts": "2026-06-17T07:48:07.027Z"
+    }
+  ]
+}

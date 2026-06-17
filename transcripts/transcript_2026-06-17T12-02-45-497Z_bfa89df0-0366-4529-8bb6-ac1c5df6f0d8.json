@@ -1,0 +1,66 @@
+{
+  "callId": "bfa89df0-0366-4529-8bb6-ac1c5df6f0d8",
+  "language": "hi",
+  "turns": [
+    {
+      "role": "digee",
+      "text": "Hello, I am Riya.",
+      "ts": "2026-06-17T12:01:44.454Z"
+    },
+    {
+      "role": "caller",
+      "text": "पिन लेमेवाद करो गी।",
+      "lang": "hi",
+      "ts": "2026-06-17T12:01:49.749Z"
+    },
+    {
+      "role": "digee",
+      "text": "Ji, aapko kis cheez ki madad chahiye?",
+      "ts": "2026-06-17T12:01:58.178Z"
+    },
+    {
+      "role": "caller",
+      "text": "SEO package ke baare mein batao",
+      "lang": "hi",
+      "ts": "2026-06-17T12:01:58.468Z"
+    },
+    {
+      "role": "digee",
+      "text": "DigeeSell ka SEO package customized hota hai aapki industry aur competition ke hisaab se, aur pehla step free strategy call hota hai. Kya aapko iske liye kisi specialist se baat karni hai?",
+      "ts": "2026-06-17T12:02:03.369Z"
+    },
+    {
+      "role": "caller",
+      "text": "प्रिवी मज़े तुम से बात करने हैं",
+      "lang": "hi",
+      "ts": "2026-06-17T12:02:18.067Z"
+    },
+    {
+      "role": "digee",
+      "text": "Bilkul, main sun rahi hoon — aap kya kehna chahte hain?",
+      "ts": "2026-06-17T12:02:23.630Z"
+    },
+    {
+      "role": "caller",
+      "text": "झाल",
+      "lang": "hi",
+      "ts": "2026-06-17T12:02:28.550Z"
+    },
+    {
+      "role": "digee",
+      "text": "Aap thoda aur bata sakte hain? Main aapki madad karne ke liye yahan hoon.",
+      "ts": "2026-06-17T12:02:33.377Z"
+    },
+    {
+      "role": "caller",
+      "text": "क्या तुम मुस्टे बात पहना चाहोगी?",
+      "lang": "hi",
+      "ts": "2026-06-17T12:02:33.637Z"
+    },
+    {
+      "role": "digee",
+      "text": "Main aap se baat karne ke liye yahan hoon — aap kya kehna chahte hain?",
+      "ts": "2026-06-17T12:02:38.714Z"
+    }
+  ]
+}

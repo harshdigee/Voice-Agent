@@ -1,0 +1,22 @@
+{
+  "callId": "27a440c3-ab35-4119-96fe-52dd81395bdf",
+  "language": "en",
+  "turns": [
+    {
+      "role": "digee",
+      "text": "Hello, I am Riya.",
+      "ts": "2026-06-17T11:40:13.623Z"
+    },
+    {
+      "role": "caller",
+      "text": "I'll give it a little.",
+      "lang": "en",
+      "ts": "2026-06-17T11:40:34.846Z"
+    },
+    {
+      "role": "digee",
+      "text": "Sure, take your time! Just let me know when you're ready.",
+      "ts": "2026-06-17T11:40:41.970Z"
+    }
+  ]
+}
